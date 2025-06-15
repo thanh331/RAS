@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ứng dụng Ký Số File</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">🔏 Ký Số File Dữ Liệu</h1>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <label for="file">Chọn file cần ký:</label>
+      <input type="file" name="file" id="file" required />
+
+      <button type="submit">Ký Số</button>
+    </form>
+
+    <div id="result" class="result hidden">
+      <p><strong>✅ File đã được ký số thành công!</strong></p>
+      <p><a id="downloadFile" href="#" target="_blank">📁 Tải file gốc</a></p>
+      <p><a id="downloadSig" href="#" target="_blank">📝 Tải file chữ ký (.sig)</a></p>
+      <p><img id="qrImage" src="" alt="QR Code" style="margin-top: 10px; max-width: 200px;"></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("uploadForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      const fileInput = document.getElementById("file");
+      const file = fileInput.files[0];
+      formData.append("file", file);
+
+      const res = await fetch("/sign", {
+        method: "POST",
+        body: formData
+      });
+
+      if (!res.ok) {
+        alert("Lỗi khi ký file!");
+        return;
+      }
+
+      const data = await res.json();
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("downloadFile").href = `/download/${data.filename}`;
+      document.getElementById("downloadSig").href = `/download/${data.signature_file}`;
+      document.getElementById("qrImage").src = `/static/qrcodes/${data.qr_image}`;
+    });
+  </script>
+</body>
+</html>
