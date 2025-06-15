@@ -1,5 +1,5 @@
 Ứng dụng RAS
-<img src="anhRAS.png" alt="Ứng dụng RAS" align="left"> 
+<img src="anhRAS.png" alt="Ứng dụng RAS"> 
 <p>🔧 Các Chức Năng Chính:
 1. 📂 Chọn và tải lên file cần ký số
 Giao diện cho phép người dùng chọn một file bất kỳ từ máy tính cá nhân.
